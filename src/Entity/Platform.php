@@ -31,7 +31,7 @@ class Platform
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToMany(targetEntity: Game::class, mappedBy: 'platforms')]
+    #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'platforms')]
     private Collection $games;
 
     public function __construct()

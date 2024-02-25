@@ -43,16 +43,16 @@ class Game
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $developer = null;
 
+    #[ORM\ManyToMany(targetEntity: Platform::class, mappedBy: 'games')]
+    private Collection $platforms;
+
     #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'games')]
     private Collection $genres;
 
-    #[ORM\ManyToMany(targetEntity: Platform::class, inversedBy: 'games')]
-    private Collection $platforms;
-
     public function __construct()
     {
-        $this->genres = new ArrayCollection();
         $this->platforms = new ArrayCollection();
+        $this->genres = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -145,30 +145,6 @@ class Game
     }
 
     /**
-     * @return Collection<int, Genre>
-     */
-    public function getGenres(): Collection
-    {
-        return $this->genres;
-    }
-
-    public function addGenre(Genre $genre): static
-    {
-        if (!$this->genres->contains($genre)) {
-            $this->genres->add($genre);
-        }
-
-        return $this;
-    }
-
-    public function removeGenre(Genre $genre): static
-    {
-        $this->genres->removeElement($genre);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Platform>
      */
     public function getPlatforms(): Collection
@@ -188,6 +164,30 @@ class Game
     public function removePlatform(Platform $platform): static
     {
         $this->platforms->removeElement($platform);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Genre>
+     */
+    public function getGenres(): Collection
+    {
+        return $this->genres;
+    }
+
+    public function addGenre(Genre $genre): static
+    {
+        if (!$this->genres->contains($genre)) {
+            $this->genres->add($genre);
+        }
+
+        return $this;
+    }
+
+    public function removeGenre(Genre $genre): static
+    {
+        $this->genres->removeElement($genre);
 
         return $this;
     }
