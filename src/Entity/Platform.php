@@ -58,13 +58,19 @@ class Platform
     #[Groups(['platform:read', 'platform:write'])]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    #[Groups(['platform:read'])]
-    private ?string $logoPath = null;
+    // #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    // #[Groups(['platform:read', 'platform:write'])]
+    // private ?string $logoPath = null;
 
-    #[Vich\UploadableField(mapping: 'platform_logo', fileNameProperty: 'logoPath')]
-    #[Groups(['platform:write'])]
-    private ?File $logoFile = null;
+    // #[Vich\UploadableField(mapping: 'platform_logo', fileNameProperty: 'logoPath')]
+    // #[Groups(['platform:write'])]
+    // private ?File $logoFile = null;
+
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['platform:read', 'platform:write'])]
+    public ?MediaObject $logo = null;
 
     #[ORM\ManyToMany(targetEntity: Game::class, inversedBy: 'platforms')]
     private Collection $games;
@@ -115,32 +121,34 @@ class Platform
         return $this;
     }
 
-    public function getLogoPath(?string $logoPath): ?string
-    {
-        return $this->logoPath;
-    }
 
-    public function setLogoPath(?string $logoPath): static
-    {
-        $this->logoPath = $logoPath;
 
-        return $this;
-    }
+    // public function getLogoPath(): ?string
+    // {
+    //     return $this->logoPath;
+    // }
 
-    public function getLogoFile(): ?File
-    {
-        // TODO: Implement getLogoFile() method.
-        return $this->logoFile;
-    }
+    // public function setLogoPath(?string $logoPath): static
+    // {
+    //     $this->logoPath = $logoPath;
 
-    public function setLogoFile(?File $image): void
-    {
-        $this->logoFile = $image;
+    //     return $this;
+    // }
 
-        if ($image) {
-            // TODO: set logoPath with name of file
-        }
-    }
+    // public function getLogoFile(): ?File
+    // {
+    //     // TODO: Implement getLogoFile() method.
+    //     return $this->logoFile;
+    // }
+
+    // public function setLogoFile(?File $image): void
+    // {
+    //     $this->logoFile = $image;
+
+    //     if ($image) {
+    //         // TODO: set logoPath with name of file
+    //     }
+    // }
 
     /**
      * @return Collection<int, Game>
